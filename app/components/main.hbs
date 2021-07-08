@@ -1,0 +1,17 @@
+{{yield}}
+
+<h2 style='display:flex; padding: 0 1em;'>Starlinks Overtime <span style='margin-left: auto;'>Total Count: {{this.totalStarLinkCount}}</span></h2>
+
+<div style='{{if this.tooltipRepresentativeContent "display: flex; justify-content: space-around;"}}'>
+  <div style='{{if this.tooltipRepresentativeContent "width: calc(100% - 275px);"}} height: 500px; background: rgba(0, 0, 0, .1);' id='starlinks-overtime-chart' {{did-insert this.initEcharts}} {{on 'click' this.refreshTooltipRepresentative}}>
+  </div>
+
+  <div {{on 'click' this.clearTooltipRepresentative}}>
+    {{{this.tooltipRepresentativeContent}}}
+  </div>
+</div>
+
+<div style='display: flex; justify-content: space-evenly; margin: 1em 0;'>
+  <button {{on 'click' this.toggleDuplicates}}>{{if this.skipDuplicates 'Show' 'Hide'}} Duplicates</button>
+  <button {{on 'click' this.toggleDynamicTooltip}}>{{if this.fixedTooltip 'Dynamic' 'Static'}} Tooltip</button>
+</div>

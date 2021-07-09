@@ -4,7 +4,7 @@ USER node
 RUN mkdir -p /home/node/app
 WORKDIR /home/node/app
 
-COPY --chown=node:node package*.json .
+COPY --chown=node:node package*.json ./
 
 ENV NODE_ENV=production
 
@@ -13,7 +13,7 @@ RUN npm install
 # RUN npm ci --only=production
 
 # Bundle app source
-COPY --chown=node:node . .
+COPY --chown=node:node . ./
 
 EXPOSE 8080
-CMD [ "node", "src/server.js" ]
+CMD [ "node", "server/bin/www" ]

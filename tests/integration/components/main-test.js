@@ -3,6 +3,8 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 
+const mainText = 'Starlinks Overtime Total Count: 0 Show Duplicates Dynamic Tooltip';
+
 module('Integration | Component | main', function (hooks) {
   setupRenderingTest(hooks);
 
@@ -12,7 +14,7 @@ module('Integration | Component | main', function (hooks) {
 
     await render(hbs`<Main />`);
 
-    assert.dom(this.element).hasText('');
+    assert.dom(this.element).hasText(mainText);
 
     // Template block usage:
     await render(hbs`
@@ -21,6 +23,6 @@ module('Integration | Component | main', function (hooks) {
       </Main>
     `);
 
-    assert.dom(this.element).hasText('template block text');
+    assert.dom(this.element).hasText('template block text ' + mainText);
   });
 });

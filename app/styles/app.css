@@ -33,9 +33,22 @@ h2 span {
   background: rgba(0, 0, 0, .1);
 }
 
+#starlinks-overtime-chart div:nth-child(2) ul {
+  margin: 0;
+  padding: 0;
+}
+
 #starlinks-overtime-chart + aside {
   flex: 0 0 232px;
   padding-left: 2em;
+
+  display: flex;
+}
+
+#starlinks-overtime-chart + aside ul {
+  padding: 0;
+  margin: 0 auto;
+  display: inline-block;
 }
 
 #controls-container {

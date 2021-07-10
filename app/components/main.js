@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import echarts from 'echarts';
+import moment from 'moment';
 
 //import json from '../../API/starlink.json';
 
@@ -187,11 +188,12 @@ async function renderChart({ skipDuplicates = true, fixedTooltip = false, } = {}
         },
         formatter: (data, ...args) => {
           const listItems = data.reduce((a, { data: { name, count }}) => {
-            return a += `<li>${name} Count: ${count}</li>`;
+            console.log(name, moment(name).format('YYYY-MM-DD HH:mm'), moment(name).utcOffset((new Date()).getTimezoneOffset()).format('YYYY-MM-DD HH:mm'));
+            return a += `<li>${moment(name).utcOffset((new Date()).getTimezoneOffset()).format('YYYY-MM-DD HH:mm')} Count: ${count}</li>`;
           }, '');
 
           const tooltipContent = `
-            <ul style='padding:0; margin:0;'>
+            <ul>
               ${listItems}
             </ul>
           `;

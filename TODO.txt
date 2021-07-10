@@ -1,0 +1,12 @@
+-Import backup JSON file (instead of hardcoding it within component).
+-Tooltip time styling (moment.js).
+-Side panel time styling (moment.js as well);
+-fix linting warnings/errors.
+-overall styling.
+
+Testing
+-graph rendering test.
+-total count rendering test.
+-Graph point click panel open test.
+-Show duplicates functionality test.
+-Dynamic tooltip functionality test.

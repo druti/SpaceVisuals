@@ -3,6 +3,8 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import echarts from 'echarts';
 
+//import json from '../../API/starlink.json';
+
 
 export default class MainComponent extends Component {
   constructor(...args) {
@@ -32,8 +34,12 @@ export default class MainComponent extends Component {
   @action toggleDuplicates() {
     console.log('toggleDuplicates');
     const newValue = !this.skipDuplicates;
+
+    this.totalStarLinkCount = 0;
     this.tooltipRepresentativeContent = '';
+
     this.skipDuplicates = newValue;
+
     setTimeout(async () => {
       await this.initEcharts({ skipDuplicates: newValue, fixedTooltip: this.fixedTooltip, });
     });
@@ -42,8 +48,12 @@ export default class MainComponent extends Component {
   @action toggleDynamicTooltip() {
     console.log('toggleDynamicTooltip');
     const newValue = !this.fixedTooltip;
+
     this.tooltipRepresentativeContent = '';
+    this.totalStarLinkCount = 0;
+
     this.fixedTooltip = newValue;
+
     setTimeout(async () => {
       await this.initEcharts({ fixedTooltip: newValue, skipDuplicates: this.skipDuplicates });
     });
@@ -79,8 +89,8 @@ async function renderChart({ skipDuplicates = true, fixedTooltip = false, } = {}
 
     starlinkFormatted = await result.json();
   } catch (error) {
-    console.log('error?', error);
-    starlinkFormatted = starlinkFormattedBackup;
+    starlinkFormatted = JSON.parse(starlinkFormattedBackup);
+    console.log('error?', error, starlinkFormatted, typeof starlinkFormatted);
   }
 
 
@@ -145,7 +155,8 @@ async function renderChart({ skipDuplicates = true, fixedTooltip = false, } = {}
 
   const tooltipRepresentative = {}
 
-  const option = {
+  const options = {
+      placeholder: 'Loading...',
       tooltip: {
         trigger: 'axis',
         position: function (pt, params, dom, tooltip, chartSize) {
@@ -213,10 +224,11 @@ async function renderChart({ skipDuplicates = true, fixedTooltip = false, } = {}
       }]
   };
 
-  option && chart.setOption(option);
+  options && chart.setOption(options);
 
   return { chart, totalCount: count, tooltipRepresentative, };
 }
+
 
 const starlinkFormattedBackup = `[
     {

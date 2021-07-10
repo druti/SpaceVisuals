@@ -3,7 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 
-const mainText = 'Starlinks Overtime Total Count: 0 Show Duplicates Dynamic Tooltip';
+const mainText = 'Starlinks Overtime Loading... Show Duplicates Dynamic Tooltip';
 
 module('Integration | Component | main', function (hooks) {
   setupRenderingTest(hooks);

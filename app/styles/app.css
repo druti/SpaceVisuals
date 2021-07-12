@@ -22,6 +22,11 @@ h2 span {
   margin-left: auto;
 }
 
+.loading-text {
+  display: inline-block;
+  width: 100px;
+}
+
 #chart-parent {
   display: flex;
   justify-content: space-around;
@@ -33,21 +38,46 @@ h2 span {
   background: rgba(0, 0, 0, .1);
 }
 
-#starlinks-overtime-chart div:nth-child(2) ul {
+#starlinks-overtime-chart div:nth-child(2) #date-list-container h3 {
+  text-align: center;
+  margin-top: 0;
+}
+
+#starlinks-overtime-chart div:nth-child(2) #date-list-container ul {
+  text-align: center;
+  list-style: none;
   margin: 0;
   padding: 0;
 }
 
 #starlinks-overtime-chart + aside {
-  flex: 0 0 232px;
-  padding-left: 2em;
+  flex: 0 0 175px;
+  margin: 0 0 0 2em;
+  padding-right: 4em;
 
   display: flex;
 }
 
-#starlinks-overtime-chart + aside ul {
+#starlinks-overtime-chart + aside #date-list-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#starlinks-overtime-chart + aside #date-list-container h3 {
+  font-family: sans-serif;
+  margin-top: 0;
+  text-align: right;
+}
+
+#starlinks-overtime-chart + aside #date-list-container ul li {
+  margin-bottom: .5em;
+}
+
+#starlinks-overtime-chart + aside #date-list-container ul {
+  list-style: none;
+  font-family: sans-serif;
   padding: 0;
-  margin: 0 auto;
   display: inline-block;
 }
 

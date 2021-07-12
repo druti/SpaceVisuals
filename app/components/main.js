@@ -21,14 +21,17 @@ export default class MainComponent extends Component {
   @tracked skipDuplicates = true;
   @tracked fixedTooltip = true;
 
+  @tracked loadingText = '';
+
   @action async refreshTooltipRepresentative() {
     this.tooltipRepresentativeContent = this.tooltipRepresentative.content;
-    console.log(this.tooltipRepresentative);
+
     setTimeout(() => this.chart.resize());
   }
 
   @action async clearTooltipRepresentative() {
     this.tooltipRepresentativeContent = '';
+
     setTimeout(() => this.chart.resize());
   }
 
@@ -63,6 +66,23 @@ export default class MainComponent extends Component {
   async initEcharts({ skipDuplicates = this.skipDuplicates, fixedTooltip = this.fixedTooltip, } = {}) {
     console.log('Init echarts!');
 
+    const loadingText = 'Loading...';
+    let loading = true;
+    let counter = 0;
+
+    this.loadingText = loadingText;
+
+    let interval = setInterval(() => {
+        const loadingDots = ((new Array(counter % 5)).join('.'));
+        this.loadingText = `${loadingText.slice(0, loadingText.length-3)}${loadingDots}`;
+
+        if (counter % 5 === 0) {
+            counter += 2;
+        } else {
+            counter += 1;
+        }
+    }, 100);
+
     if (this.chart) {
       this.chart.dispose();
     }
@@ -75,6 +95,9 @@ export default class MainComponent extends Component {
     this.tooltipRepresentativeContent = tooltipRepresentative.content;
     console.log(this.tooltipRepresentative);
 
+    clearInterval(interval);
+    this.loadingText = '';
+
     return chart;
   }
 }
@@ -82,6 +105,8 @@ export default class MainComponent extends Component {
 async function renderChart({ skipDuplicates = true, fixedTooltip = false, } = {}) {
   const chartDom = document.getElementById('starlinks-overtime-chart');
   const chart = echarts.init(chartDom);
+
+  chart.showLoading('default', { text: '', spinnerRadius: 69, lineWidth: 5, });
 
   let starlinkFormatted;
 
@@ -119,7 +144,8 @@ async function renderChart({ skipDuplicates = true, fixedTooltip = false, } = {}
   for (let i = 0; i < sortedDataArray.length; i++) {
     const item = sortedDataArray[i];
     const dateString = item.spaceTrack.CREATION_DATE;
-    const now = new Date(dateString);
+    const momentValue = moment(dateString).utcOffset((new Date()).getTimezoneOffset());
+    const dateValue = momentValue.toDate();
 
     if (dataMap[dateString]) {
       if (skipDuplicates) {
@@ -134,10 +160,10 @@ async function renderChart({ skipDuplicates = true, fixedTooltip = false, } = {}
       count += 1;
 
       let obj = {
-        name: dateString,
+        name: dateValue.toString(),
         count,
         value: [
-            [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+            [dateValue.getFullYear(), dateValue.getMonth() + 1, dateValue.getDate()].join('/'),
             count,
         ]
       };
@@ -157,7 +183,6 @@ async function renderChart({ skipDuplicates = true, fixedTooltip = false, } = {}
   const tooltipRepresentative = {}
 
   const options = {
-      placeholder: 'Loading...',
       tooltip: {
         trigger: 'axis',
         position: function (pt, params, dom, tooltip, chartSize) {
@@ -183,19 +208,30 @@ async function renderChart({ skipDuplicates = true, fixedTooltip = false, } = {}
         axisPointer: {
           type: 'cross',
           label: {
-            backgroundColor: '#111111'
+            backgroundColor: '#111111',
+            formatter: ({ axisDimension, value, ...restArgs }) => {
+              if (axisDimension === 'y') {
+                return `${Math.round(value)}`;
+              } else {
+                const dateValue = new Date(value);
+                return [dateValue.getDate(), dateValue.getMonth() + 1, dateValue.getFullYear()].join('/');
+              }
+            },
           }
         },
         formatter: (data, ...args) => {
           const listItems = data.reduce((a, { data: { name, count }}) => {
-            console.log(name, moment(name).format('YYYY-MM-DD HH:mm'), moment(name).utcOffset((new Date()).getTimezoneOffset()).format('YYYY-MM-DD HH:mm'));
-            return a += `<li>${moment(name).utcOffset((new Date()).getTimezoneOffset()).format('YYYY-MM-DD HH:mm')} Count: ${count}</li>`;
+            return a += `<li>${count} at ${moment(name).format('hh:mm a')}</li>`;
           }, '');
 
+          console.log('?', data, data[0]);
           const tooltipContent = `
-            <ul>
-              ${listItems}
-            </ul>
+            <div id='date-list-container'>
+              <h3>${moment(data[0].data.name).format('Do MMMM YYYY')}</h3>
+              <ul>
+                ${listItems}
+              </ul>
+            </div>
           `;
 
           tooltipRepresentative.content = tooltipContent;
@@ -218,13 +254,24 @@ async function renderChart({ skipDuplicates = true, fixedTooltip = false, } = {}
           color: 'black'
         },
         areaStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-            offset: 0,
-            color: 'black'
-          }, {
-            offset: 1,
-            color: 'blue'
-          }])
+          color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [
+            {
+              offset: 1,
+              color: '#000000'
+            },
+            {
+              offset: 0.6,
+              color: '#000001'
+            },
+            {
+              offset: 0.2,
+              color: 'blue'
+            },
+            {
+              offset: 0,
+              color: 'lightblue'
+            },
+          ])
         },
         data: mapToDataArray,
         type: 'line'
@@ -232,6 +279,8 @@ async function renderChart({ skipDuplicates = true, fixedTooltip = false, } = {}
   };
 
   options && chart.setOption(options);
+
+  chart.hideLoading();
 
   return { chart, totalCount: count, tooltipRepresentative, };
 }

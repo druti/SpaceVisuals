@@ -1,12 +1,12 @@
 {{yield}}
 
 <h2>
-  Starlinks Overtime 
+  Starlink count
   <span>
-    {{#if this.totalStarLinkCount}}
-      Total Count: {{this.totalStarLinkCount}}
+    {{#if this.loadingText}}
+      <span class='loading-text'>{{this.loadingText}}</span>
     {{else}}
-      Loading...
+      Total: {{this.totalStarLinkCount}}
     {{/if}}
   </span>
 </h2>
@@ -18,7 +18,7 @@
     id='starlinks-overtime-chart'
     {{did-insert this.initEcharts}} {{on 'click' this.refreshTooltipRepresentative}}
   >
-    Loading...
+    {{this.loadingText}}
   </div>
 
   {{#if this.tooltipRepresentativeContent}}
@@ -30,6 +30,6 @@
 </div>
 
 <div id='controls-container'>
-  <button {{on 'click' this.toggleDuplicates}}>{{if this.skipDuplicates 'Show' 'Hide'}} Duplicates</button>
-  <button {{on 'click' this.toggleDynamicTooltip}}>{{if this.fixedTooltip 'Dynamic' 'Static'}} Tooltip</button>
+  <button disabled={{this.loadingText}} {{on 'click' this.toggleDuplicates}}>{{if this.skipDuplicates 'Show All' 'Hide Clones'}}</button>
+  <button disabled={{this.loadingText}} {{on 'click' this.toggleDynamicTooltip}}>{{if this.fixedTooltip 'Sticky' 'Static'}} Tooltip</button>
 </div>

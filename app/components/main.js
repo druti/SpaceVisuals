@@ -153,7 +153,7 @@ async function renderChart({ skipDuplicates = true, fixedTooltip = false, } = {}
       } else {
         count += 1;
 
-        dataMap[dateString].value[1] = count + 1;
+        dataMap[dateString].value[1] = count;
         dataMap[dateString].count = dataMap[dateString].value[1];
       }
     } else {

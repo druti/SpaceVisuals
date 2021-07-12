@@ -26,7 +26,7 @@ const R={}
 let C=0
 for(let N=0;N<I.length;N++){const n=I[N].spaceTrack.CREATION_DATE,T=(0,O.default)(n).utcOffset((new Date).getTimezoneOffset()).toDate()
 if(R[n]){if(E)continue
-C+=1,R[n].value[1]=C+1,R[n].count=R[n].value[1]}else{C+=1
+C+=1,R[n].value[1]=C,R[n].count=R[n].value[1]}else{C+=1
 let E={name:T.toString(),count:C,value:[[T.getFullYear(),T.getMonth()+1,T.getDate()].join("/"),C]}
 R[n]=E}}console.log(R)
 const S=Object.keys(R).map((E=>R[E])),M={},D={tooltip:{trigger:"axis",position:function(E,T,A,_,I){if(!I)return[E[0],E[1]]
@@ -76,4 +76,4 @@ E.default=T})),define("space-visuals/templates/index",["exports","@ember/templat
 var T=(0,n.createTemplateFactory)({id:"Z/e20Nac",block:'[[[8,[39,0],null,null,null],[1,"\\n"]],[],false,["main"]]',moduleName:"space-visuals/templates/index.hbs",isStrictMode:!1})
 E.default=T})),define("space-visuals/transforms/boolean",["exports","@ember-data/serializer/-private"],(function(E,n){Object.defineProperty(E,"__esModule",{value:!0}),Object.defineProperty(E,"default",{enumerable:!0,get:function(){return n.BooleanTransform}})})),define("space-visuals/transforms/date",["exports","@ember-data/serializer/-private"],(function(E,n){Object.defineProperty(E,"__esModule",{value:!0}),Object.defineProperty(E,"default",{enumerable:!0,get:function(){return n.DateTransform}})}))
 define("space-visuals/transforms/number",["exports","@ember-data/serializer/-private"],(function(E,n){Object.defineProperty(E,"__esModule",{value:!0}),Object.defineProperty(E,"default",{enumerable:!0,get:function(){return n.NumberTransform}})})),define("space-visuals/transforms/string",["exports","@ember-data/serializer/-private"],(function(E,n){Object.defineProperty(E,"__esModule",{value:!0}),Object.defineProperty(E,"default",{enumerable:!0,get:function(){return n.StringTransform}})})),define("space-visuals/config/environment",[],(function(){try{var E="space-visuals/config/environment",n=document.querySelector('meta[name="'+E+'"]').getAttribute("content"),T={default:JSON.parse(decodeURIComponent(n))}
-return Object.defineProperty(T,"__esModule",{value:!0}),T}catch(A){throw new Error('Could not read config from meta tag with name "'+E+'".')}})),runningTests||require("space-visuals/app").default.create({name:"space-visuals",version:"0.0.0+451f2b30"})
+return Object.defineProperty(T,"__esModule",{value:!0}),T}catch(A){throw new Error('Could not read config from meta tag with name "'+E+'".')}})),runningTests||require("space-visuals/app").default.create({name:"space-visuals",version:"0.0.0+6378daf5"})

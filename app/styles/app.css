@@ -55,7 +55,26 @@ h2 span {
   margin: 0 0 0 2em;
   padding-right: 4em;
 
+  height: 500px;
+  overflow-y: scroll;
+
   display: flex;
+
+  position: relative;
+}
+
+#starlinks-overtime-chart + aside::after {
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  height: 0px;
+  width: 100%;
+  background: white;
+  opacity: .5;
+  box-shadow: 0 -10px 5px 5px white;
+}
+
+
 }
 
 #starlinks-overtime-chart + aside #date-list-container {

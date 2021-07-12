@@ -215,11 +215,16 @@ async function renderChart({ skipDuplicates = true, fixedTooltip = false, } = {}
       },
       series: [{
         itemStyle: {
-          color: 'red'
+          color: 'black'
         },
         areaStyle: {
-          opacity: 0.8,
-          color: 'red',
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'black'
+          }, {
+            offset: 1,
+            color: 'blue'
+          }])
         },
         data: mapToDataArray,
         type: 'line'
